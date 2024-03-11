@@ -1,11 +1,17 @@
-// https://github.com/renatoln/INF029/tree/master/AtividadesExtras
-// https://www.youtube.com/playlist?list=PLtHqLyFn7jQsgVexAkyeGpSeoy5IhzLX7
-// https://docs.google.com/document/d/1yYW3NnylPDPcjifmB319Kga92LBbo9Pr0Taq1l0GoiM/edit
-// https://ads.ifba.edu.br/INF029
+
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <stdbool.h>
 #define TAM_ALUNO 3
-#define FALSO 0
+
+typedef struct {
+  int matricula;
+  char nome[50];
+  char sexo;
+} Aluno;
 
 void main(){
 
@@ -60,7 +66,7 @@ void main(){
               break;
             }
             default:{
-              printf("Opcao invalida")
+              printf("Opcao invalida");
             }
           }
         break;
@@ -78,4 +84,5 @@ void main(){
       }
     }
   }
+}
 }

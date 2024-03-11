@@ -1,3 +1,20 @@
 {
-  "files": {}
+  "files": {
+    "ProjetoEscola/sys_escola/crud.c": [
+      {
+        "id": "a3541795-c029-4290-a52c-6c2b51da0d06",
+        "line": 37,
+        "version": 590,
+        "index": 1167
+      }
+    ],
+    "ProjetoEscola/sys_escola/menus.c": [
+      {
+        "id": "d4aa40a4-1cf7-49f6-9299-8fccb550dac3",
+        "line": 277,
+        "version": 365,
+        "index": 6817
+      }
+    ]
+  }
 }

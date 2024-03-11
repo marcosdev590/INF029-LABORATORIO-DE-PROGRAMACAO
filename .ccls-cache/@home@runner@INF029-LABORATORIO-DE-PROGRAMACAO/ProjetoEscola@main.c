@@ -7,6 +7,12 @@
 #define TAM_ALUNO 3
 #define FALSO 0
 
+typedef struct {
+  int matricula;
+  char nome[50];
+  char sexo;
+} Aluno;
+
 void main(){
 
   int listaAluno[TAM_ALUNO];
@@ -60,7 +66,7 @@ void main(){
               break;
             }
             default:{
-              printf("Opcao invalida")
+              printf("Opcao invalida");
             }
           }
         break;
@@ -78,4 +84,5 @@ void main(){
       }
     }
   }
+}
 }
