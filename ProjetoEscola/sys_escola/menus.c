@@ -5,17 +5,14 @@
 //HEADERS 
 #include "menus.h"
 
-void boasVindas()
-{
-    printf("****************************************\n");
-    printf("**      BEM VINDOS AO SYS_ESCOLA      **\n");
-    printf("****************************************\n\n");
-}
+//DEFINE
+#define FALHA_NA_SOLICITACAO 400
+#define SUCESSO_NA_SOLICITACAO 200
 
 int opcaoMenuAlunos()
 {
     int opcao;
-    printf("****************************************\n");
+    printf("\n****************************************\n");
     printf("**           MENU DE ALUNOS           **\n");
     printf("****************************************\n\n");
     printf("****************************************\n");
@@ -36,7 +33,7 @@ int opcaoMenuAlunos()
 void loopMenuAlunos(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos)
 {
     //CRIAÇÃO DE VARIÁVEIS
-    int opcao;
+    int opcao, codigo;
     bool sair = false;
 
     while (!sair)
@@ -49,7 +46,9 @@ void loopMenuAlunos(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos)
             break;
 
         case 1:
-            cadastroPessoa(listaAlunos, TAM_MAX_ALUNOS, totalAlunos);
+			codigo = cadastroPessoa(listaAlunos, TAM_MAX_ALUNOS, totalAlunos);
+			if (codigo == SUCESSO_NA_SOLICITACAO) printf("\nCADASTRO DE ALUNO REALIZADO COM SUCESSO\n\n");
+			else if (codigo == FALHA_NA_SOLICITACAO) printf("\nCADASTRO DE ALUNO CANCELADO OU FALHOU\n\n");
             break;
 
         case 2:
@@ -73,7 +72,7 @@ void loopMenuAlunos(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos)
 int opcaoMenuProfessores()
 {
     int opcao;
-    printf("****************************************\n");
+    printf("\n****************************************\n");
     printf("**         MENU DE PROFESSORES        **\n");
     printf("****************************************\n\n");
     printf("****************************************\n");
@@ -94,7 +93,7 @@ int opcaoMenuProfessores()
 void loopMenuProfessores(Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int * totalProfessores)
 {
     //CRIAÇÃO DE VARIÁVEIS
-    int opcao;
+    int opcao, codigo;
     bool sair = false;
 
     while (!sair)
@@ -107,7 +106,9 @@ void loopMenuProfessores(Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int
             break;
 
         case 1:
-            cadastroPessoa(listaProfessores, TAM_MAX_PROFESSORES, totalProfessores);
+            codigo = cadastroPessoa(listaProfessores, TAM_MAX_PROFESSORES, totalProfessores);
+			if (codigo == SUCESSO_NA_SOLICITACAO) printf("CADASTRO DE PROFESSOR REALIZADO COM SUCESSO");
+			else if (codigo == FALHA_NA_SOLICITACAO) printf("CADASTRO DE PROFESSOR CANCELADO OU FALHOU");
             break;
 
         case 2:
@@ -131,7 +132,7 @@ void loopMenuProfessores(Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int
 int opcaoMenuDisciplinas()
 {
     int opcao;
-    printf("****************************************\n");
+    printf("\n****************************************\n");
     printf("**         MENU DE DISCIPLINAS        **\n");
     printf("****************************************\n\n");
     printf("****************************************\n");
@@ -165,19 +166,19 @@ void loopMenuDisciplinas(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAl
             break;
 
         case 1:
-            cadastroDisciplina();
+            //cadastroDisciplina();
             break;
 
         case 2:
-            listarDisciplinas();
+           //listarDisciplinas();
             break;
 
         case 3:
-            atualizacaoDisciplina();
+            //atualizacaoDisciplina();
             break;
 
         case 4:
-            exclusaoDisciplina();
+            //exclusaoDisciplina();
             break;
 
         default:
@@ -189,17 +190,16 @@ void loopMenuDisciplinas(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAl
 int opcaoMenuRelatorios()
 {
     int opcao;
-    printf("****************************************\n");
+    printf("\n****************************************\n");
     printf("**      MENU DE RELATÓRIOS GERAIS     **\n");
     printf("****************************************\n\n");
     printf("****************************************\n");
     printf("**       DIGITE A OPÇÃO DESEJADA      **\n");
     printf("****************************************\n\n");
     printf("0 - VOLTAR\n");
-    printf("1 - CADASTRAR\n");
-    printf("2 - LISTAR\n");
-    printf("3 - ATUALIZAR\n");
-    printf("4 - EXCLUIR\n");
+    printf("1 - LISTAR ALUNOS\n"); 
+    printf("2 - LISTAR PROFESSORES\n");
+    printf("3 - LISTAR DISCIPLINAS\n");
 
     printf("\nDIGITE A OPÇÃO DESEJADA: ");
     scanf("%d", &opcao);
@@ -207,7 +207,7 @@ int opcaoMenuRelatorios()
     return opcao;
 }
 
-void loopMenuRelatorios(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos, Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int * totalProfessores)
+void loopMenuRelatorios(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos, Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int * totalProfessores, Disciplina * listaDisciplinas, int TAM_MAX_DISCIPLINAS, int * totalDisciplinas)
 {
     //CRIAÇÃO DE VARIÁVEIS
     int opcao;
@@ -223,15 +223,15 @@ void loopMenuRelatorios(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlu
             break;
 
         case 1:
-            //cadastroPessoa();
+            //listarPessoas(listaAlunos, totalPessoas);
             break;
 
         case 2:
-            //listarPessoas();
+            //listarPessoas(listaProfessores, totalPessoas);
             break;
 
         case 3:
-            //atualizacaoPessoa();
+            //listarDisciplinas();
             break;
 
         case 4:
@@ -247,7 +247,7 @@ void loopMenuRelatorios(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlu
 int opcaoMenuPrincipal()
 {
     int opcao;
-    printf("****************************************\n");
+    printf("\n****************************************\n");
     printf("**           MENU PRINCIPAL           **\n");
     printf("****************************************\n\n");
     printf("****************************************\n");
@@ -265,7 +265,7 @@ int opcaoMenuPrincipal()
     return opcao;
 }
 
-void loopMenuPrincipal(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos, Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int * totalProfessores)
+void loopMenuPrincipal(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos, Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int * totalProfessores, Disciplina * listaDisciplinas, int TAM_MAX_DISCIPLINAS, int * totalDisciplinas)
 {
     //CRIAÇÃO DE VARIÁVEIS
     int opcao;
@@ -294,7 +294,7 @@ void loopMenuPrincipal(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlun
             break;
 
         case 4:
-            loopMenuRelatorios(listaAlunos, TAM_MAX_ALUNOS, totalAlunos, listaProfessores, TAM_MAX_PROFESSORES, totalProfessores);
+            loopMenuRelatorios(listaAlunos, TAM_MAX_ALUNOS, totalAlunos, listaProfessores, TAM_MAX_PROFESSORES, totalProfessores, listaDisciplinas, TAM_MAX_DISCIPLINAS, totalDisciplinas);
             break;
 
         default:

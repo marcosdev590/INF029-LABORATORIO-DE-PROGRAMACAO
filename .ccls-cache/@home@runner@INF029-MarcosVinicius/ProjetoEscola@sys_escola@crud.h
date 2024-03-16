@@ -2,32 +2,24 @@
 #include "structs.h"
 #include "validacoes.h"
 
-// CREATE
-
-int cadastroPessoa(Pessoa * listaPessoas, int limitePessoas, int * totalPessoas); //Cadastra um aluno ou professor, recebendo sua matrícula, nome, sexo, data de nascimento e CPF. Chama uma função para validar os dados antes de gravar no array correspondente.
-
-int cadastroDisciplina(); // Cadastra uma disciplina, recebendo seu nome, código, semestre e professor responsável
+ // Cadastra uma disciplina, recebendo seu nome, código, semestre e professor responsável
 
 // READ
-void listarPessoas(Pessoa * listaPessoas, int * totalPessoas); // Lista o array de alunos ou professores, informando todos os dados das pessoas por linhas, separando os atributos com um |
 
-void listarDisciplinas(); //Lista o array de disciplinas, informando todos os dados por linhas, separando os atributos com um |
+ //Lista o array de disciplinas, informando todos os dados por linhas, separando os atributos com um |
 
-int listarDisciplina(); //Lista uma disciplina e seus dados, incluindo os alunos matriculados
+ //Lista uma disciplina e seus dados, incluindo os alunos matriculados
 
 // UPDATE
 
-int atualizacaoPessoa(Pessoa * listaPessoas, int * totalPessoas); //Atualiza um aluno ou professor, recebendo sua matrícula, nome, sexo, data de nascimento e CPF. Chama uma função para validar os dados antes de gravar no array correspondente.
-
-int atualizacaoDisciplina(); // Atualiza uma disciplina, recebendo seu nome, código, semestre e professor responsável
+ // Atualiza uma disciplina, recebendo seu nome, código, semestre e professor responsável
 
 // DELETE
 
-int exclusaoPessoa(Pessoa * listaPessoas, int * totalPessoas); //Exclui o cadastro de um aluno ou professor, recebendo sua matrícula e reorganizando o array correspondente após apagar os dados
-
-int exclusaoDisciplina(); // Exclui uma disciplina, recebendo seu código e reorganizando o array correspondente após apagar os dados
+ // Exclui uma disciplina, recebendo seu código e reorganizando o array correspondente após apagar os dados
 
 //RELATÓRIOS
+int listarDisciplina(Disciplina * listaDisciplinas, int * totalDisciplinas);
 
 int listarPessoasPorSexo(); //Lista todos os alunos ou professores em ordem de matrícula separando por sexo
 

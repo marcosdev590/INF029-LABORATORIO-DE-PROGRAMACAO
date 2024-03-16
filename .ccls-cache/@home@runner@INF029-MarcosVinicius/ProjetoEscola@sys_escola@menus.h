@@ -1,20 +1,21 @@
 //HEADERS 
-#include "crud.h"
+#include "pessoa.h"
+#include "disciplina.h"
+#include "relatorios.h"
 #include "structs.h"
 
-void boasVindas();
-
+//PROTÓTIPOS
 int opcaoMenuAlunos();
-void loopMenuAlunos();
+void loopMenuAlunos(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos);
 
 int opcaoMenuProfessores();
-void loopMenuProfessores();
+void loopMenuProfessores(Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int * totalProfessores);
 
 int opcaoMenuDisciplinas();
-void loopMenuDisciplinas();
+void loopMenuDisciplinas(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos, Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int * totalProfessores);
 
 int opcaoMenuRelatorios();
-void loopMenuRelatorios();
+void loopMenuRelatorios(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos, Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int * totalProfessores, Disciplina * listaDisciplinas, int TAM_MAX_DISCIPLINAS, int * totalDisciplinas);
 
 int opcaoMenuPrincipal();
-void loopMenuPrincipal();
+void loopMenuPrincipal(Pessoa * listaAlunos, int TAM_MAX_ALUNOS, int * totalAlunos, Pessoa * listaProfessores, int TAM_MAX_PROFESSORES, int * totalProfessores, Disciplina * listaDisciplinas, int TAM_MAX_DISCIPLINAS, int * totalDisciplinas);
