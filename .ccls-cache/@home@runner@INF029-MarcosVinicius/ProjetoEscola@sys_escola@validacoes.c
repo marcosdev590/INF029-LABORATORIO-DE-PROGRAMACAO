@@ -2,59 +2,75 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <ctype.h>
+#include <time.h>
 
 //HEADERS
 #include "validacoes.h"
 
 //DEFINE
+#define FALHA_NA_SOLICITACAO -400
 #define ENCERRAR_INT 0
 #define ENCERRAR_STR "0"
 #define ENCERRAR_CHR '0'
 #define MAX_TAM_STR 50
 #define MAX_TAM_CPF 15
+#define MAX_TAM_DSC 7
 #define MAX_TAM_CHR 0
 
-int validarMatricula(Pessoa * listaPessoas, int * totalPessoas) //PROBLEMÁTICO
+int validarMatricula(Pessoa * listaPessoas, int * totalPessoas) //FINALIZADO
 {
-	int matricula;
+  srand(time(NULL));
+  int matricula = (rand() % 9999) + 1;
 
-	int isNumber = scanf("%d", &matricula);
-	printf("isNumber é %d e matrícula é %d\n", isNumber, matricula);
-
-	if (matricula == ENCERRAR_INT) //Confere se o usuário digitou 0 para sair do cadastro
-	{
-		return ENCERRAR_INT;
-	}
-	else if (matricula < 0) //Confere se a matrícula é menor do que 0
-	{
-		printf("MATRÍCULA MENOR DO QUE ZERO!!!!! DIGITE NOVAMENTE: ");
-		matricula = validarMatricula(listaPessoas, totalPessoas);
-	}
-	else 
-	{
-		for (int i = 0; i < *totalPessoas; i++) //Confere se a matrícula já existe
-		{
-			if (matricula == listaPessoas[i].matricula)
-			{
-				printf("MATRÍCULA JÁ CADASTRADA!!!!! DIGITE NOVAMENTE: ");
-				matricula = validarMatricula(listaPessoas, totalPessoas);
-			}
-		} 
-	}
-	
+  for(int i = 0; i < *totalPessoas; i++) //Confere se a matrícula já existe
+  {
+    if (matricula == listaPessoas[i].matricula) matricula = validarMatricula(listaPessoas, totalPessoas);
+  }
     return matricula;
 }
 
-void validarNome(char nome[])
+void validarNome(char nome[]) //FINALIZADO
 {
-	while ((getchar()) != '\n');
+	bool valido = true, contemApenasEspacos = true;
+
 	fgets(nome, MAX_TAM_STR, stdin);
 	nome[strcspn(nome, "\n")] = '\0';
+
+	for (int i = 0; nome[i] != '\0'; i++)
+	{
+		if (nome[i] != ' ')
+		{
+			contemApenasEspacos = false;
+			break;
+		}
+	}
+
+	if (nome[0] == '\0' || contemApenasEspacos)
+	{
+		printf("O NOME DIGITADO ESTÁ VAZIO!!!!! DIGITE NOVAMENTE: ");
+		validarNome(nome);
+	}
+	else for (int i = 0; nome[i] != '\0'; i++) 
+	{
+		if (strcmp(nome, ENCERRAR_STR) == 0) break;
+		else if (!isalpha(nome[i]) && nome[i] != ' ') 
+		{
+			valido = false;
+			break;
+		}
+	}
+	if (!valido)
+	{
+		printf("O NOME DIGITADO CONTÉM CARACTERES QUE NÃO SÃO LETRAS!!!!! DIGITE NOVAMENTE: ");
+		validarNome(nome);
+	}
 }
 
-char validarSexo(char sexo)
+char validarSexo() //FINALIZADO
 {
+	char sexo;
 	sexo = getchar();
 	while ((getchar()) != '\n');
 	
@@ -64,39 +80,38 @@ char validarSexo(char sexo)
 	if (sexo != 'M' && sexo != 'F')
 	{
 		printf("CARACTERE INVÁLIDO. DIGITE NOVAMENTE: ");
-		sexo = validarSexo(sexo);
+		validarSexo(sexo);
 	}
 	
     return sexo;
 }
 
-Data validarAniversario(Data dataAniversario)
+Data validarAniversario() //FINALIZADO
 {
-    int diaAniversario, mesAniversario, anoAniversario;
+	Data dataAniversario;
+  	int diaAniversario, mesAniversario, anoAniversario;
 	
-	printf("DIA DA DATA DE NASCIMENTO (FORMATO DD): ");
-	scanf("%d", &diaAniversario);
-
-	printf("MÊS DA DATA DE NASCIMENTO (FORMATO MM): ");
-	scanf("%d", &mesAniversario);
-
-	printf("ANO DA DATA DE NASCIMENTO (FORMATO AAAA): ");
-	scanf("%d", &anoAniversario);
-
-    // Lógica de validação da data aqui
-    // Por exemplo, verificação se o dia, mês e ano são válidos
-
-    // Atribui os valores à variável Data se a validação for bem-sucedida
-    dataAniversario.dia = diaAniversario;
-    dataAniversario.mes = mesAniversario;
-    dataAniversario.ano = anoAniversario;
-
-    return dataAniversario;
+	do
+	{
+		printf("DIA DA DATA DE NASCIMENTO (FORMATO DD): ");
+		scanf("%d", &diaAniversario);
+	
+	    printf("MÊS DA DATA DE NASCIMENTO (FORMATO MM): ");
+		scanf("%d", &mesAniversario);
+	
+	    printf("ANO DA DATA DE NASCIMENTO (FORMATO AAAA): ");
+		scanf("%d", &anoAniversario);
+	} while(!validarData(diaAniversario, mesAniversario, anoAniversario));
+	
+	dataAniversario.dia = diaAniversario;
+	dataAniversario.mes = mesAniversario;
+	dataAniversario.ano = anoAniversario;
+		  
+	return dataAniversario;
 }
 
-void validarCPF(char cpf[])
+void validarCPF(char cpf[]) //FINALIZADO
 {
-	while ((getchar()) != '\n');
 	fgets(cpf, MAX_TAM_STR, stdin);
 	cpf[strcspn(cpf, "\n")] = '\0';
 
@@ -112,10 +127,11 @@ void validarCPF(char cpf[])
 		}
 	}
 
-	if (aux != 11)
+	if (strcmp(cpf, ENCERRAR_STR) == 0) return;
+	else if (aux != 11)
 	{
 		printf("O CPF ESTÁ INCORRETO!!! DIGITE NOVAMENTE: ");
-		//ALGUMA FORMA 
+		validarCPF(cpf);
 	}
 	else
 	{
@@ -138,13 +154,92 @@ void validarCPF(char cpf[])
 		int segundoDigitoVerificador = segundaSoma % 11;
 		if (segundoDigitoVerificador == 10) segundoDigitoVerificador = 0;
 
-		if (primeiroDigitoVerificador == cpf_int[aux - 2] && segundoDigitoVerificador == cpf_int[aux - 1])
+		if (!(primeiroDigitoVerificador == cpf_int[aux - 2] && segundoDigitoVerificador == cpf_int[aux - 1]))
 		{
-			printf("O CPF ESTÁ CORRETO");
-		}
-		else
-		{
-			printf("O CPF ESTÁ INCORRETO");
+			printf("O CPF ESTÁ INCORRETO!!! DIGITE NOVAMENTE: ");
+			validarCPF(cpf);
 		}
 	}
+}
+
+void validarCodigoDisciplina(char codigo[]) //FINALIZADO
+{
+	fgets(codigo, MAX_TAM_DSC, stdin);
+	codigo[strcspn(codigo, "\n")] = '\0';
+
+	if (codigo[0] == '\0')
+		{
+			printf("O NOME DIGITADO ESTÁ VAZIO!!!!! DIGITE NOVAMENTE: ");
+			validarCodigoDisciplina(codigo);
+		}
+	else for (int i = 0; codigo[i] != '\0'; i++) 
+	{
+		if (strcmp(codigo, ENCERRAR_STR) == 0) break;
+		if (!isalnum(codigo[i])) 
+		{
+			printf("O CÓDIGO DIGITADO CONTÉM CARACTERES QUE NÃO SÃO ALFANÚMERICOS!!!!! DIGITE NOVAMENTE: ");
+			validarCodigoDisciplina(codigo); 
+			break;
+		}
+	}
+}
+
+//FUNÇÕES AUXILIARES
+bool bissexto(int ano)
+{
+	return (ano % 4 == 0 && ano % 100 != 0) || ano % 400 == 0;
+}
+
+bool validarData(int dia, int mes, int ano)
+{
+	if (dia == 0 || mes == 0 || ano == 0) return true;
+	if (mes < 1 || mes > 12 || dia < 1 || dia > 31) return false;
+	if (dia > 30 && (mes == 4 || mes == 6 || mes == 9 || mes == 11)) return false;
+	if (dia > 29 && mes == 2 && bissexto(ano)) return false;
+	if (dia > 28 && mes == 2 && !bissexto(ano)) return false;
+	return true;
+}
+
+int buscarPessoa(bool * achou, Pessoa * listaPessoas, int * totalPessoas)
+{
+	int matriculaProcurada, posicaoCerta = 0;
+	
+	scanf("%d", &matriculaProcurada);
+
+	if (matriculaProcurada == ENCERRAR_INT) return FALHA_NA_SOLICITACAO;
+
+	while (posicaoCerta < *totalPessoas)
+	{
+		if (matriculaProcurada == listaPessoas[posicaoCerta].matricula)
+		{
+			*achou = true;
+			break;
+		}
+		posicaoCerta++;
+	}
+
+	return posicaoCerta;
+}
+
+int buscarDisciplina(bool * achou, Disciplina * listaDisciplinas, int * totalDisciplinas)
+{
+	int posicaoCerta = 0;
+	char codigoProcurado[MAX_TAM_DSC];
+
+	fgets(codigoProcurado, MAX_TAM_DSC, stdin);
+	codigoProcurado[strcspn(codigoProcurado, "\n")] = '\0';
+
+	if (!strcmp(codigoProcurado, ENCERRAR_STR)) return FALHA_NA_SOLICITACAO;
+
+	while (posicaoCerta < *totalDisciplinas)
+	{
+		if (!(strcmp(codigoProcurado, listaDisciplinas[posicaoCerta].codigo)))
+		{
+			*achou = true;
+			break;
+		}
+		posicaoCerta++;
+	}
+
+	return posicaoCerta;
 }

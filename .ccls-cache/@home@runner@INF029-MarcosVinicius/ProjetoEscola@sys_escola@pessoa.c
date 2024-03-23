@@ -5,8 +5,8 @@
 #include <stdbool.h>
 
 //DEFINE
-#define FALHA_NA_SOLICITACAO 400
-#define SUCESSO_NA_SOLICITACAO 200
+#define FALHA_NA_SOLICITACAO -400
+#define SUCESSO_NA_SOLICITACAO -200
 #define ENCERRAR_INT 0
 #define ENCERRAR_STR "0"
 #define ENCERRAR_CHR '0'
@@ -15,6 +15,7 @@
 #define MAX_TAM_DSC 7
 
 //HEADERS
+#include "menus.h"
 #include "pessoa.h"
 
 //CREATE
@@ -38,24 +39,24 @@ int cadastroPessoa(Pessoa * listaPessoas, int limitePessoas, int * totalPessoas)
 	printf("****************************************\n");
 	printf("**              CADASTRO              **\n");
 	printf("****************************************\n\n");
-	  printf("PARA SAIR A QUALQUER MOMENTO, DIGITE 0\n\n");
-	printf("MATRÍCULA: ");
+	printf("PARA SAIR A QUALQUER MOMENTO, DIGITE 0\n\n");
 
 	matricula = validarMatricula(listaPessoas, totalPessoas);
-	if (matricula == ENCERRAR_INT) return FALHA_NA_SOLICITACAO;
 
 	printf("NOME: ");
+	while ((getchar()) != '\n');
 	validarNome(nome);
 	if (strcmp(nome, ENCERRAR_STR) == 0) return FALHA_NA_SOLICITACAO;
 
 	printf("SEXO (M/F): ");
-	sexo = validarSexo(sexo);
-	if (matricula == ENCERRAR_CHR) return FALHA_NA_SOLICITACAO;
+	sexo = validarSexo();
+	if (sexo == ENCERRAR_CHR) return FALHA_NA_SOLICITACAO;
 
-	aniversario = validarAniversario(aniversario);
+	aniversario = validarAniversario();
 	if (aniversario.dia == ENCERRAR_INT || aniversario.mes == ENCERRAR_INT || aniversario.ano == ENCERRAR_INT) return FALHA_NA_SOLICITACAO;
 
 	printf("CPF: ");
+	while ((getchar()) != '\n');
 	validarCPF(cpf);
 	if (strcmp(cpf, ENCERRAR_STR) == 0) return FALHA_NA_SOLICITACAO;
 
@@ -64,7 +65,8 @@ int cadastroPessoa(Pessoa * listaPessoas, int limitePessoas, int * totalPessoas)
 	listaPessoas[*totalPessoas].sexo = sexo;
 	listaPessoas[*totalPessoas].dataNascimento = aniversario;
 	strcpy(listaPessoas[*totalPessoas].cpf, cpf);
-
+  listaPessoas[*totalPessoas].qtdDisciplinasMatriculadas = 0;
+	
 	(*totalPessoas)++; // Incrementa o total de alunos ou professores cadastrados
 
 	return SUCESSO_NA_SOLICITACAO;
@@ -88,32 +90,38 @@ void listarPessoas(Pessoa * listaPessoas, int * totalPessoas) // Lista o array d
 		for (int i = 0; i < *totalPessoas; i++) 
 		{
 			printf("MATRÍCULA: %d | NOME: %s | SEXO: %c | DATA DE NASCIMENTO: %02d/%02d/%04d | CPF: %s\n", listaPessoas[i].matricula, listaPessoas[i].nome, listaPessoas[i].sexo, listaPessoas[i].dataNascimento.dia, listaPessoas[i].dataNascimento.mes, listaPessoas[i].dataNascimento.ano, listaPessoas[i].cpf);
-			printf("------------------------------------------------------------------------------------\n\n");
+			printf("------------------------------------------------------------------------------------\n");
 		}
+		printf("\n");
 	}  
 }
 
 //UPDATE
-int atualizacaoPessoa(Pessoa * listaPessoas, int * totalPessoas) //Atualiza um aluno ou professor, recebendo sua matrícula, nome, sexo, data de nascimento e CPF. Chama uma função para validar os dados antes de gravar no array correspondente.
+int atualizacaoPessoa(Pessoa * listaPessoas, int * totalPessoas) //Atualiza um aluno ou professor, recebendo sua matrícula e atualizando a mesma, além de nome, sexo, data de nascimento e CPF. Chama uma função para validar os dados antes de gravar no array correspondente.
 {
 	bool achou = false;
-	int matricula;
+	int posicaoCerta, novaMatricula, diaAniversario, mesAniversario, anoAniversario;
+	char novoSexo, novoNome[MAX_TAM_STR], novoCpf[MAX_TAM_CPF];
+	Data novoAniversario;
+	
+	printf("\n****************************************\n");
+	printf("**             ATUALIZAÇÃO            **\n");
+	printf("****************************************\n\n");
+	printf("PARA SAIR A QUALQUER MOMENTO, DIGITE 0\n\n");
 	printf("DIGITE A MATRÍCULA DO CADASTRO A SER ATUALIZADO: ");
-	scanf("%d", &matricula);
 
-	for (int i = 0; i < *totalPessoas; i++)
+	posicaoCerta = buscarPessoa(&achou, listaPessoas, totalPessoas);
+	
+	if (posicaoCerta == FALHA_NA_SOLICITACAO) return FALHA_NA_SOLICITACAO;
+	else if (!achou)
 	{
-		if (matricula == listaPessoas[i].matricula)
-		{
-			scanf("%d", &listaPessoas[i].matricula);
-			achou = true;
-			break;
-		}
+		printf("MATRÍCULA NÃO ENCONTRADA!!!!! DIGITE NOVAMENTE: ");
+		posicaoCerta = buscarPessoa(&achou, listaPessoas, totalPessoas);
 	}
 
-	if (achou) printf("ALUNO EXCLUÍDO COM SUCESSO\n");
-	else printf("MATRÍCULA INEXISTENTE\n");
-	return 0;
+	loopAtualizarPessoa(listaPessoas, novoNome, novoSexo, novoAniversario, novoCpf, &posicaoCerta);
+		
+	return SUCESSO_NA_SOLICITACAO;
 }
 
 //DELETE
@@ -142,7 +150,10 @@ int exclusaoPessoa(Pessoa * listaPessoas, int * totalPessoas) //Exclui o cadastr
 		}
 	}
 
-	if (achou) printf("ALUNO EXCLUÍDO COM SUCESSO\n");
-	else printf("MATRÍCULA INEXISTENTE\n");
-	return 0;
+	if (achou) return SUCESSO_NA_SOLICITACAO;
+	else 
+	{
+		printf("MATRÍCULA INEXISTENTE!!!!! ");
+		return exclusaoPessoa(listaPessoas, totalPessoas);
+	}	
 }

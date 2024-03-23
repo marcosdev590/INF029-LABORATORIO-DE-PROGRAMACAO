@@ -9,9 +9,9 @@
 #define TAM_MAX_PROFESSORES 3
 #define TAM_MAX_DISCIPLINAS 3
 
-int main()
+void main()
 {
-    //DECLARAÇÃO DOS VETORES E QUANTIDADE INICIAL DE ALUNOS E PROFESSORES
+    //DECLARAÇÃO DAS LISTAS INICIAIS DE ALUNOS, PROFESSORES E DICIPLINAS E QUANTIDADE INICIAL DE ALUNOS E PROFESSORES
     Pessoa listaAlunos[TAM_MAX_ALUNOS];
     Pessoa listaProfessores[TAM_MAX_PROFESSORES];
 	Disciplina listaDisciplinas[TAM_MAX_DISCIPLINAS];
@@ -23,8 +23,5 @@ int main()
 	printf("****************************************\n");
 	printf("**      BEM VINDOS AO SYS_ESCOLA      **\n");
 	printf("****************************************\n");
-	
     loopMenuPrincipal(listaAlunos, TAM_MAX_ALUNOS, &totalAlunos, listaProfessores, TAM_MAX_PROFESSORES, &totalProfessores, listaDisciplinas, TAM_MAX_DISCIPLINAS, &totalDisciplinas);
-
-    return 0;
 }

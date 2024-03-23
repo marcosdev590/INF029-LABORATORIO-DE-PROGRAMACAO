@@ -3,9 +3,7 @@
 
 typedef struct DDMMAAAA
 {
-    int dia;
-    int mes;
-    int ano;
+    int dia, mes, ano;
 } Data;
 
 typedef struct dadosAlunoProfessor
@@ -15,6 +13,7 @@ typedef struct dadosAlunoProfessor
     char sexo;
     Data dataNascimento;
     char cpf[15];
+    int qtdDisciplinasMatriculadas;
 } Pessoa;
 
 typedef struct dadosDisciplina
@@ -22,8 +21,15 @@ typedef struct dadosDisciplina
     char nome[50];
     char codigo[6];
     char semestre[6];
-    Pessoa professor;
+    Pessoa * professor;
+	int qtdAlunosCadastrados;
+	Pessoa * alunos[50];
 } Disciplina;
 
+typedef struct anoSemestre
+{
+	int ano;
+	int semestre;
+} anoSemestre;
 
 #endif // STRUCTS_H
